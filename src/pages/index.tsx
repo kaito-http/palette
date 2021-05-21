@@ -8,45 +8,45 @@ export const AnimatedDialogOverlay = animated(DialogOverlay);
 export const AnimatedDialogContent = animated(DialogContent);
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+	const open = () => setIsOpen(true);
+	const close = () => setIsOpen(false);
 
-  const transitions = useTransition(isOpen, {
-    from: {
-      opacity: 1,
-      scale: 0.9,
-    },
-    enter: {
-      opacity: 1,
-      scale: 1,
-    },
-    leave: {
-      opacity: 0,
-    },
-  });
+	const transitions = useTransition(isOpen, {
+		from: {
+			opacity: 1,
+			scale: 0.9,
+		},
+		enter: {
+			opacity: 1,
+			scale: 1,
+		},
+		leave: {
+			opacity: 0,
+		},
+	});
 
-  return (
-    <div>
-      <Dialog isOpen={isOpen} onDismiss={close}>
-        {transitions((styles) => {
-          return (
-            <AnimatedDialogOverlay style={{ position: "absolute", opacity: styles.opacity }}>
-              <AnimatedDialogContent style={styles}>
-                <button onClick={() => setIsOpen(false)}>Close Dialog</button>
-                <p>React Spring makes it too easy!</p>
-                <input type="text" />
-                <br />
-                <input type="text" />
-                <button>Ayyyyyy</button>
-              </AnimatedDialogContent>
-            </AnimatedDialogOverlay>
-          );
-        })}
-      </Dialog>
+	return (
+		<div>
+			<Dialog isOpen={isOpen} onDismiss={close}>
+				{transitions(styles => {
+					return (
+						<AnimatedDialogOverlay style={{ position: "absolute", opacity: styles.opacity }}>
+							<AnimatedDialogContent style={styles}>
+								<button onClick={() => setIsOpen(false)}>Close Dialog</button>
+								<p>owo</p>
+								<input type="text" />
+								<br />
+								<input type="text" />
+								<button>Ayyyyyy</button>
+							</AnimatedDialogContent>
+						</AnimatedDialogOverlay>
+					);
+				})}
+			</Dialog>
 
-      <button onClick={open}>hi</button>
-    </div>
-  );
+			<button onClick={open}>hi</button>
+		</div>
+	);
 }
