@@ -56,16 +56,13 @@ const CommandContainer = ({close}: {close: () => void}) => {
 			leaveFrom="scale-100 opacity-100"
 			leaveTo="scale-50 opacity-0"
 		>
-			<div ref={ref} className="w-1/2 h-1/2 shadow-xl bg-black text-white rounded-md p-10 pt-0 overflow-y-auto">
-				<div className="flex items-center space-x-4 py-10 mb-3">
-					<h1 className="font-bold text-2xl z-10 sticky top-0 bg-black w-1/2">Keyboard Shortcuts</h1>
-					<input
-						ref={inputRef}
-						type="text"
-						placeholder="Search"
-						className="w-1/2 transition-all py-2 bg-transparent border-b-2 border-opacity-20 focus:outline-none outline-none focus:border-opacity-100 border-orange text-white"
-					/>
-				</div>
+			<div ref={ref} className="w-1/2 h-1/2 shadow-xl bg-gray-900 text-white rounded-md overflow-y-auto">
+				<input
+					ref={inputRef}
+					type="text"
+					placeholder="Search"
+					className="w-full transition-all py-2 bg-transparent border-b px-4 border-gray-800 border-opacity-20 focus:outline-none outline-none focus:border-opacity-100 border-orange text-white"
+				/>
 
 				<div className="grid grid-cols-2 gap-4">hi</div>
 			</div>
