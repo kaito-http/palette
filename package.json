@@ -1,0 +1,24 @@
+{
+  "name": "spring-pallette",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/alii/spring-pallette",
+  "author": "Alistair Smith <alistairsmith01@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@reach/dialog": "^0.15.0",
+    "next": "^10.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-spring": "^9.1.2",
+    "use-hotkeys": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.0",
+    "@types/react": "^17.0.6",
+    "typescript": "^4.2.4"
+  },
+  "scripts": {
+    "dev": "next dev"
+  }
+}
