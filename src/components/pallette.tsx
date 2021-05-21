@@ -92,6 +92,7 @@ export function useOutsideClick<E extends HTMLElement = HTMLElement>(callback: (
 		};
 
 		document.addEventListener('click', handler);
+
 		return () => {
 			document.removeEventListener('click', handler);
 		};
