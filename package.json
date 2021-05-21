@@ -6,11 +6,16 @@
   "author": "Alistair Smith <alistairsmith01@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@headlessui/react": "^1.2.0",
     "@reach/dialog": "^0.15.0",
+    "autoprefixer": "^10.2.5",
     "next": "^10.2.2",
+    "postcss": "^8.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hotkeys-hook": "^3.3.1",
     "react-spring": "^9.1.2",
+    "tailwindcss": "^2.1.2",
     "use-hotkeys": "^1.1.0"
   },
   "devDependencies": {

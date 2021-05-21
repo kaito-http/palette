@@ -1,52 +1,13 @@
-import Dialog, { DialogOverlay, DialogContent } from "@reach/dialog";
-import { useTransition } from "@react-spring/core";
-import { animated } from "@react-spring/web";
-import { CSSProperties, useState } from "react";
-import { UseTransitionProps } from "react-spring";
+import React from 'react';
+import {DialogOverlay, DialogContent} from '@reach/dialog';
+import {animated} from '@react-spring/web';
+import {Command} from '../components/pallette';
 
 export const AnimatedDialogOverlay = animated(DialogOverlay);
 export const AnimatedDialogContent = animated(DialogContent);
 
-export default function Home() {
-	const [isOpen, setIsOpen] = useState(false);
+const Home = () => {
+	return <Command />;
+};
 
-	const open = () => setIsOpen(true);
-	const close = () => setIsOpen(false);
-
-	const transitions = useTransition(isOpen, {
-		from: {
-			opacity: 1,
-			scale: 0.9,
-		},
-		enter: {
-			opacity: 1,
-			scale: 1,
-		},
-		leave: {
-			opacity: 0,
-		},
-	});
-
-	return (
-		<div>
-			<Dialog isOpen={isOpen} onDismiss={close}>
-				{transitions(styles => {
-					return (
-						<AnimatedDialogOverlay style={{ position: "absolute", opacity: styles.opacity }}>
-							<AnimatedDialogContent style={styles}>
-								<button onClick={() => setIsOpen(false)}>Close Dialog</button>
-								<p>owo</p>
-								<input type="text" />
-								<br />
-								<input type="text" />
-								<button>Ayyyyyy</button>
-							</AnimatedDialogContent>
-						</AnimatedDialogOverlay>
-					);
-				})}
-			</Dialog>
-
-			<button onClick={open}>hi</button>
-		</div>
-	);
-}
+export default Home;

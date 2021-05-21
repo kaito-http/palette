@@ -1,5 +1,9 @@
-import { AppProps } from "next/dist/next-server/lib/router/router";
+import React from 'react';
+import {AppProps} from 'next/dist/next-server/lib/router/router';
+import 'tailwindcss/tailwind.css';
 
-export default function App(props: AppProps) {
-  return <props.Component />;
-}
+const App = (props: AppProps) => {
+	return <props.Component />;
+};
+
+export default App;

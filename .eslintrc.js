@@ -4,16 +4,19 @@ module.exports = {
 		es2021: true,
 		node: true,
 	},
-	extends: ["plugin:react/recommended", "xo", "xo-typescript", "xo-react"],
-	parser: "@typescript-eslint/parser",
+	extends: ['plugin:react/recommended', 'xo', 'xo-typescript', 'xo-react'],
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
 		},
 		ecmaVersion: 12,
-		sourceType: "module",
+		sourceType: 'module',
 	},
-	plugins: ["react", "@typescript-eslint"],
-	rules: {},
-	ignorePatterns: ["**/*.js"],
+	plugins: ['react', '@typescript-eslint'],
+	rules: {
+		'@typescript-eslint/comma-dangle': 'off',
+		'react/jsx-tag-spacing': 'off',
+	},
+	ignorePatterns: ['**/*.js'],
 };
