@@ -21,7 +21,16 @@ export const Command = () => {
 	return (
 		<Transition
 			show={open}
-			className="transition-all fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-80 transform"
+			className="
+				fixed
+				top-0
+				right-0
+				bottom-0
+				left-0
+				transition-all
+				transform
+				bg-overlay-light
+				dark:bg-overlay-dark"
 			enterFrom="opacity-0"
 			enterTo="opacity-100"
 			leaveFrom="opacity-100"
@@ -50,23 +59,80 @@ const CommandContainer = ({close}: {close: () => void}) => {
 
 	return (
 		<Transition.Child
-			className="transition-all h-full transform flex items-center justify-center"
+			className="flex justify-center items-center h-full transition-all transform-gpu"
 			enterFrom="scale-95 opacity-0"
 			enterTo="scale-100 opacity-100"
 			leaveFrom="scale-100 opacity-100"
-			leaveTo="scale-50 opacity-0"
+			leaveTo="scale-75 opacity-0"
 		>
-			<div ref={ref} className="w-1/2 h-1/2 shadow-xl bg-gray-900 text-white rounded-md overflow-y-auto">
+			<div
+				ref={ref} className="
+				flex
+				overflow-y-auto
+				flex-col
+				w-3/4
+				max-w-screen-sm
+				h-3/4
+				max-h-96
+				rounded-xl
+				border
+				border-separator-light
+				dark:border-separator-dark
+				text-pallette-foreground-light
+				dark:text-pallette-foreground-dark
+				bg-pallette-background-light
+				dark:bg-pallette-background-dark"
+			>
 				<input
 					ref={inputRef}
 					type="text"
 					placeholder="Search"
-					className="w-full transition-all py-2 bg-transparent border-b px-4 border-gray-800 border-opacity-20 focus:outline-none outline-none focus:border-opacity-100 border-orange text-white"
+					className="
+						py-4
+						px-5
+						pt-5
+						text-lg
+						appearance-none
+						text-highlight-foreground-light
+						dark:text-highlight-foreground-dark
+						bg-pallette-background-light
+						dark:bg-pallette-background-dark"
 				/>
-
-				<div className="grid grid-cols-2 gap-4">hi</div>
+				<div className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
+				{/* Use framer-motion here to move the highlight seamlessly */}
+				<CommandItem name="Action 1"/>
+				<CommandItem name="Action 2"/>
+				<CommandItem name="Action 3"/>
+				<CommandItem name="Action 4"/>
+				<CommandItem name="Action 5"/>
 			</div>
 		</Transition.Child>
+	);
+};
+
+enum CommandItemType {
+	Navigation,
+	Action
+}
+
+const CommandItem = ({type, name, shortcut}: {type?: CommandItemType; name: string; shortcut?: string|number}) => {
+	return (
+		<div
+			className="
+				flex
+				py-3
+				px-5
+				my-1
+				mx-3
+				rounded-md
+				cursor-pointer
+				hover:bg-highlight-background-light
+				hover:text-highlight-foreground-light
+				dark:hover:bg-highlight-background-dark
+				dark:hover:text-highlight-foreground-dark"
+		>
+			<span>{name} {type} {shortcut}</span>
+		</div>
 	);
 };
 

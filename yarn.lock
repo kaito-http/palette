@@ -1166,6 +1166,13 @@
     "resolve" "^2.0.0-next.3"
     "string.prototype.matchall" "^4.0.4"
 
+"eslint-plugin-tailwindcss@^1.8.0":
+  "integrity" "sha512-5jPmJbPb4AKDVz3UyzKJaXVUBKqqQU9iQFPN6Y6IlfALk9faIqlkC8Aj+7mXx+2ayXDVu0UnHvA05eu7yprFaA=="
+  "resolved" "https://registry.npmjs.org/eslint-plugin-tailwindcss/-/eslint-plugin-tailwindcss-1.8.0.tgz"
+  "version" "1.8.0"
+  dependencies:
+    "tailwindcss" "^2.1.2"
+
 "eslint-scope@^5.0.0", "eslint-scope@^5.1.1":
   "integrity" "sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw=="
   "resolved" "https://registry.npmjs.org/eslint-scope/-/eslint-scope-5.1.1.tgz"
