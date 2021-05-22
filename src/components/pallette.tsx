@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
+
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
 
@@ -11,7 +12,9 @@ export const Command = () => {
 			e.preventDefault();
 			setOpen(v => !v);
 		},
-		{enableOnTags: ['INPUT']}
+		{
+			enableOnTags: ['INPUT'],
+		}
 	);
 
 	useEffect(() => {
