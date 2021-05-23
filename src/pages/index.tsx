@@ -1,32 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {useAtom} from 'jotai';
-import {atomCommands} from '../atoms/commands';
-import {flowers} from '../flowers';
-
-const getRandomFlower = () => flowers[Math.floor(Math.random() * flowers.length)];
+import React from 'react';
+import {Pallette} from '../components/pallette';
+import {CommandItemType} from '../components/commandItem';
 
 const Home = () => {
-	const [, set] = useAtom(atomCommands);
-	const [flower, setFlower] = useState(getRandomFlower());
-
-	const hi = () => {
-		setFlower(getRandomFlower());
-	};
-
-	useEffect(() => {
-		void set(x => {
-			return [
-				...x,
-				{
-					label: 'Deez',
-					action: hi,
-					command: 'cmd+x',
-				},
-			];
-		});
-	}, [set]);
-
-	return <p>{flower}</p>;
+	return (
+		<div
+			className="
+				flex
+				justify-center
+				items-center
+				h-screen
+				text-black
+				dark:text-white
+				bg-white
+				dark:bg-black
+			"
+		>
+			<h1 className="flex-grow-0 text-2xl opacity-30">Press ⌘K</h1>
+			<Pallette
+				items={[
+					{type: CommandItemType.Action, name: 'View help'},
+					{type: CommandItemType.Action, name: 'Download Ram'},
+					{type: CommandItemType.Action, name: 'Enable Teddies'},
+					{type: CommandItemType.Navigation, name: 'Home Page'},
+					{type: CommandItemType.Navigation, name: 'About Page'},
+				]}
+			/>
+		</div>
+	);
 };
 
 export default Home;
