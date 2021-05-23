@@ -71,7 +71,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 
 	useEffect(() => {
 		setSelected(items.indexOf(mappedItems[0]));
-	}, [mappedItems]);
+	}, [mappedItems, items]);
 
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
@@ -148,11 +148,27 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 							onKeyDown={moveFocus}
 						/>
 					</motion.div>
-					<motion.div layout className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
+
+					<div className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
+					{mappedItems.length === 0 && (
+						<div className="mx-3 text-center">
+							<div className="flex justify-center items-center pt-4 h-16">
+								<h2 className="inline">No Items</h2>
+							</div>
+						</div>
+					)}
 					<div className="overflow-hidden py-2">
 						<AnimatePresence>
-							{mappedItems.map(item => {
-								return <CommandItemView key={item.name} item={item} selected={items[selected] === item} />;
+							{mappedItems.map((item, index) => {
+								return (
+									<CommandItemView
+										key={item.name}
+										index={index}
+										setIndex={setSelected}
+										item={item}
+										selected={items[selected] === item}
+									/>
+								);
 							})}
 						</AnimatePresence>
 					</div>

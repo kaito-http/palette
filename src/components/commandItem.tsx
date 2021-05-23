@@ -1,5 +1,5 @@
 import {motion} from 'framer-motion';
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {AiOutlineQuestion, AiOutlineLink, AiOutlineThunderbolt} from 'react-icons/ai';
 
 export enum CommandItemType {
@@ -24,14 +24,31 @@ const CommandItemIcon = ({type}: {type: CommandItemType}) => {
 	}
 };
 
-export const CommandItemView = ({item, selected}: {item: CommandItem; selected: boolean}) => {
+export const CommandItemView = ({
+	item,
+	selected,
+	...props
+}: {
+	item: CommandItem;
+	selected: boolean;
+	index: number;
+	setIndex: Dispatch<SetStateAction<number>>;
+}) => {
 	return (
 		<motion.div
 			key={item.name}
 			layout
 			initial={{opacity: 0, maxHeight: 'auto'}}
 			animate={{opacity: 1, maxHeight: 'auto'}}
-			exit={{opacity: 0, maxHeight: '0%'}}
+			exit={{
+				opacity: 0,
+				maxHeight: '0%',
+				transition: {
+					type: 'spring',
+					damping: 10000,
+					stiffness: 1,
+				},
+			}}
 			transition={{
 				type: 'spring',
 				damping: 80,
@@ -45,7 +62,11 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 				px-5
 				my-1
 				mx-3
-				cursor-pointer"
+				cursor-pointer
+			"
+			onMouseOver={() => {
+				props.setIndex(props.index);
+			}}
 		>
 			{selected && (
 				<motion.div
