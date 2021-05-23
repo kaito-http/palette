@@ -27,7 +27,15 @@ export const CommandItemView = ({type, name, shortcut}: CommandItem) => {
 				dark:hover:bg-highlight-background-dark
 				dark:hover:text-highlight-foreground-dark"
 		>
-			<div>{type}</div>
+			<div
+				className="
+				block
+				w-4
+				h-4
+				bg-highlight-background-light"
+			>
+				{type}
+			</div>
 			<span>{name}</span>
 			{shortcut ? <div>{shortcut}</div> : ''}
 		</div>
