@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
 import {CommandItem, CommandItemView} from './commandItem';
-import {AnimateSharedLayout} from 'framer-motion';
+import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 
 export const Pallette = ({items}: {items: CommandItem[]}) => {
 	const [open, setOpen] = useState(false);
@@ -87,49 +87,57 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 			leaveFrom="scale-100 opacity-100"
 			leaveTo="scale-75 opacity-0"
 		>
-			<div
-				ref={ref} className="
-				flex
-				overflow-y-auto
-				flex-col
-				w-3/4
-				max-w-screen-sm
-				h-3/4
-				max-h-96
-				rounded-xl
-				border
-				border-separator-light
-				dark:border-separator-dark
-				text-pallette-foreground-light
-				dark:text-pallette-foreground-dark
-				bg-pallette-background-light
-				dark:bg-pallette-background-dark"
-			>
-				<input
-					ref={inputRef}
-					type="text"
-					placeholder="Search"
+			<AnimateSharedLayout>
+				<motion.div
+					ref={ref}
+					layout
 					className="
-						py-4
-						px-5
-						pt-5
-						text-lg
-						appearance-none
-						text-highlight-foreground-light
-						dark:text-highlight-foreground-dark
+						flex
+						overflow-y-hidden
+						flex-col
+						w-3/4
+						max-w-screen-sm
+						rounded-xl
+						border
+						border-separator-light
+						dark:border-separator-dark
+						text-pallette-foreground-light
+						dark:text-pallette-foreground-dark
 						bg-pallette-background-light
 						dark:bg-pallette-background-dark"
-					value={predicate}
-					onInput={e => {
-						setPredicate((e.target as HTMLInputElement).value);
-					}}
-					onKeyDown={moveFocus}
-				/>
-				<div className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
-				<AnimateSharedLayout>
-					{items.map(item => <CommandItemView key={item.name} item={item} selected={items[selected] === item} />)}
-				</AnimateSharedLayout>
-			</div>
+				>
+					<motion.div layout className="flex">
+						<input
+							ref={inputRef}
+							type="text"
+							placeholder="Search"
+							className="
+								flex-1
+								py-4
+								px-5
+								pt-5
+								text-lg
+								appearance-none
+								focus:outline-none
+								text-highlight-foreground-light
+								dark:text-highlight-foreground-dark
+								bg-pallette-background-light
+								dark:bg-pallette-background-darkk"
+							value={predicate}
+							onInput={e => {
+								setPredicate((e.target as HTMLInputElement).value);
+							}}
+							onKeyDown={moveFocus}
+						/>
+					</motion.div>
+					<motion.div layout className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
+					<AnimatePresence>
+						{items
+							.filter(item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase()))
+							.map(item => <CommandItemView key={item.name} item={item} selected={items[selected] === item} />)}
+					</AnimatePresence>
+				</motion.div>
+			</AnimateSharedLayout>
 		</Transition.Child>
 	);
 };

@@ -26,7 +26,12 @@ const CommandItemIcon = ({type}: {type: CommandItemType}) => {
 
 export const CommandItemView = ({item, selected}: {item: CommandItem; selected: boolean}) => {
 	return (
-		<div
+		<motion.div
+			key={item.name}
+			layout
+			initial={{opacity: 0}}
+			animate={{opacity: 1}}
+			exit={{opacity: 0}}
 			className="
 				flex
 				relative
@@ -62,6 +67,6 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 				<span>{item.name}</span>
 				{item.shortcut ? <div>{item.shortcut}</div> : ''}
 			</div>
-		</div>
+		</motion.div>
 	);
 };
