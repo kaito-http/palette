@@ -13,7 +13,9 @@ export const Pallette = ({items}: {items: CommandItem[]}) => {
 			e.preventDefault();
 			setOpen(v => !v);
 		},
-		{enableOnTags: ['INPUT']}
+		{
+			enableOnTags: ['INPUT'],
+		}
 	);
 
 	useEffect(() => {
