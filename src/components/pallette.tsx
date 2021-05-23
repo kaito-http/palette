@@ -52,15 +52,9 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	const [predicate, setPredicate] = useState('');
 	const [selected, setSelected] = useState(0);
 
-	const mappedItems = items.map((item, index) => {
-		const filter = predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase());
-
-		if (!filter) {
-			return null;
-		}
-
-		return <CommandItemView key={item.name} item={item} selected={selected === index} />;
-	});
+	const mappedItems = items.filter(
+		item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase())
+	);
 
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -139,7 +133,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 								text-highlight-foreground-light
 								dark:text-highlight-foreground-dark
 								bg-pallette-background-light
-								dark:bg-pallette-background-darkk"
+								dark:bg-pallette-background-dark"
 							value={predicate}
 							onInput={e => {
 								setPredicate((e.target as HTMLInputElement).value);
@@ -149,7 +143,11 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					</motion.div>
 					<motion.div layout className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
 					<div className="py-2">
-						<AnimatePresence presenceAffectsLayout>{mappedItems}</AnimatePresence>
+						<AnimatePresence presenceAffectsLayout>
+							{mappedItems.map((item, index) => {
+								return <CommandItemView key={item.name} item={item} selected={selected === index} />;
+							})}
+						</AnimatePresence>
 					</div>
 				</motion.div>
 			</AnimateSharedLayout>
