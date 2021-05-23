@@ -152,7 +152,15 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					<div className="overflow-hidden py-2">
 						<AnimatePresence>
 							{mappedItems.map((item, index) => {
-								return <CommandItemView key={item.name} item={item} selected={selected === index} />;
+								return (
+									<CommandItemView
+										key={item.name}
+										index={index}
+										setIndex={setSelected}
+										item={item}
+										selected={selected === index}
+									/>
+								);
 							})}
 						</AnimatePresence>
 					</div>
