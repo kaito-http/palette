@@ -13,10 +13,12 @@ module.exports = {
 		ecmaVersion: 12,
 		sourceType: 'module',
 	},
-	plugins: ['react', '@typescript-eslint'],
+	plugins: ['react', '@typescript-eslint', 'tailwindcss'],
 	rules: {
 		'@typescript-eslint/comma-dangle': 'off',
 		'react/jsx-tag-spacing': 'off',
+		"tailwindcss/classnames-order": 'error',
+    "tailwindcss/no-contradicting-classname": 'error'
 	},
 	ignorePatterns: ['**/*.js'],
 };
