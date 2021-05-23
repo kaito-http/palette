@@ -8,7 +8,7 @@ export const Pallette = ({items}: {items: CommandItem[]}) => {
 	const [open, setOpen] = useState(false);
 
 	useHotkeys(
-		'cmd+k',
+		'cmd+k,ctrl+k',
 		e => {
 			e.preventDefault();
 			setOpen(v => !v);
