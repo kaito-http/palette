@@ -19,11 +19,11 @@ const Home = () => {
 			<h1 className="flex-grow-0 text-2xl opacity-30">Press ⌘K</h1>
 			<Pallette
 				items={[
-					{type: CommandItemType.Action, name: 'Action 1'},
-					{type: CommandItemType.Action, name: 'Action 2'},
-					{type: CommandItemType.Action, name: 'Action 3'},
-					{type: CommandItemType.Navigation, name: 'Navigation 1'},
-					{type: CommandItemType.Navigation, name: 'Navigation 2'},
+					{type: CommandItemType.Action, name: 'View help'},
+					{type: CommandItemType.Action, name: 'Download Ram'},
+					{type: CommandItemType.Action, name: 'Enable Teddies'},
+					{type: CommandItemType.Navigation, name: 'Home Page'},
+					{type: CommandItemType.Navigation, name: 'About Page'},
 				]}
 			/>
 		</div>

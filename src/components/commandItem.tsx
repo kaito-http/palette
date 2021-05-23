@@ -4,7 +4,7 @@ import {AiOutlineQuestion, AiOutlineLink, AiOutlineThunderbolt} from 'react-icon
 
 export enum CommandItemType {
 	Navigation,
-	Action
+	Action,
 }
 
 export interface CommandItem {
@@ -31,7 +31,12 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 			layout
 			initial={{opacity: 0}}
 			animate={{opacity: 1}}
-			exit={{opacity: 0}}
+			exit={{opacity: 0, maxHeight: 0}}
+			transition={{
+				type: 'spring',
+				damping: 80,
+				stiffness: 2000,
+			}}
 			className="
 				flex
 				relative
@@ -42,13 +47,13 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 				mx-3
 				cursor-pointer"
 		>
-			{selected &&
+			{selected && (
 				<motion.div
 					layoutId="selection"
 					transition={{
 						type: 'spring',
 						damping: 65,
-						stiffness: 1800
+						stiffness: 1800,
 					}}
 					className="
 						absolute
@@ -59,10 +64,11 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 						rounded-md
 						bg-highlight-background-light
 						dark:bg-highlight-background-dark"
-				/>}
+				/>
+			)}
 			<div className="flex z-10 items-center">
 				<div className="mt-px mr-3">
-					<CommandItemIcon type={item.type}/>
+					<CommandItemIcon type={item.type} />
 				</div>
 				<span>{item.name}</span>
 				{item.shortcut ? <div>{item.shortcut}</div> : ''}

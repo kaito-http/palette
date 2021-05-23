@@ -51,8 +51,23 @@ export const Pallette = ({items}: {items: CommandItem[]}) => {
 const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
 	const [predicate, setPredicate] = useState('');
 	const [selected, setSelected] = useState(0);
+
+	const mappedItems = items.map((item, index) => {
+		const filter = predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase());
+
+		if (!filter) {
+			return null;
+		}
+
+		return <CommandItemView key={item.name} item={item} selected={selected === index} />;
+	});
+
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		setSelected(0);
+	}, [mappedItems.length]);
 
 	useHotkeys('esc', close, {
 		enableOnTags: ['INPUT'],
@@ -67,15 +82,18 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 			case 'ArrowDown':
 				setSelected((selected + 1) % items.length);
 				break;
+
 			case 'ArrowUp':
 				if (selected <= 0) {
 					setSelected(items.length - 1);
-				}	else {
+				} else {
 					setSelected(selected - 1);
 				}
 
 				break;
+
 			default:
+				break;
 		}
 	};
 
@@ -115,7 +133,6 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 								flex-1
 								py-4
 								px-5
-								pt-5
 								text-lg
 								appearance-none
 								focus:outline-none
@@ -130,12 +147,10 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 							onKeyDown={moveFocus}
 						/>
 					</motion.div>
-					<motion.div layout className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
-					<AnimatePresence>
-						{items
-							.filter(item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase()))
-							.map(item => <CommandItemView key={item.name} item={item} selected={items[selected] === item} />)}
-					</AnimatePresence>
+					<motion.div layout className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
+					<div className="py-2">
+						<AnimatePresence presenceAffectsLayout>{mappedItems}</AnimatePresence>
+					</div>
 				</motion.div>
 			</AnimateSharedLayout>
 		</Transition.Child>
