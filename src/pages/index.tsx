@@ -23,7 +23,7 @@ const Home = () => {
 					{type: CommandItemType.Action, name: 'Action 2'},
 					{type: CommandItemType.Action, name: 'Action 3'},
 					{type: CommandItemType.Navigation, name: 'Navigation 1'},
-					{type: CommandItemType.Navigation, name: 'Navigation 2'}
+					{type: CommandItemType.Navigation, name: 'Navigation 2'},
 				]}
 			/>
 		</div>
