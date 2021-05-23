@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
+import {CommandItem, CommandItemView} from './commandItem';
 
-export const Command = () => {
+export const Pallette = ({items}: {items: CommandItem[]}) => {
 	const [open, setOpen] = useState(false);
 
 	useHotkeys(
@@ -27,16 +28,17 @@ export const Command = () => {
 				right-0
 				bottom-0
 				left-0
-				transition-all
-				transform
 				bg-overlay-light
-				dark:bg-overlay-dark"
+				dark:bg-overlay-dark
+				transition-all
+				transform"
 			enterFrom="opacity-0"
 			enterTo="opacity-100"
 			leaveFrom="opacity-100"
 			leaveTo="opacity-0"
 		>
 			<CommandContainer
+				items={items}
 				close={() => {
 					setOpen(false);
 				}}
@@ -45,7 +47,8 @@ export const Command = () => {
 	);
 };
 
-const CommandContainer = ({close}: {close: () => void}) => {
+const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
+	const [predicate, setPredicate] = useState('');
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -97,42 +100,16 @@ const CommandContainer = ({close}: {close: () => void}) => {
 						dark:text-highlight-foreground-dark
 						bg-pallette-background-light
 						dark:bg-pallette-background-dark"
+					value={predicate}
+					onInput={e => {
+						setPredicate((e.target as HTMLInputElement).value);
+					}}
 				/>
 				<div className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
 				{/* Use framer-motion here to move the highlight seamlessly */}
-				<CommandItem name="Action 1"/>
-				<CommandItem name="Action 2"/>
-				<CommandItem name="Action 3"/>
-				<CommandItem name="Action 4"/>
-				<CommandItem name="Action 5"/>
+				{items.map(item => <CommandItemView key={item.name} {...item}/>)}
 			</div>
 		</Transition.Child>
-	);
-};
-
-enum CommandItemType {
-	Navigation,
-	Action
-}
-
-const CommandItem = ({type, name, shortcut}: {type?: CommandItemType; name: string; shortcut?: string|number}) => {
-	return (
-		<div
-			className="
-				flex
-				py-3
-				px-5
-				my-1
-				mx-3
-				rounded-md
-				cursor-pointer
-				hover:bg-highlight-background-light
-				hover:text-highlight-foreground-light
-				dark:hover:bg-highlight-background-dark
-				dark:hover:text-highlight-foreground-dark"
-		>
-			<span>{name} {type} {shortcut}</span>
-		</div>
 	);
 };
 
