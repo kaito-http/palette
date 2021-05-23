@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 import React from 'react';
 import {AiOutlineQuestion, AiOutlineLink, AiOutlineThunderbolt} from 'react-icons/ai';
 
@@ -23,28 +24,44 @@ const CommandItemIcon = ({type}: {type: CommandItemType}) => {
 	}
 };
 
-export const CommandItemView = ({type, name, shortcut}: CommandItem) => {
+export const CommandItemView = ({item, selected}: {item: CommandItem; selected: boolean}) => {
 	return (
 		<div
 			className="
 				flex
+				relative
 				items-center
 				py-3
 				px-5
 				my-1
 				mx-3
-				rounded-md
-				cursor-pointer
-				hover:bg-highlight-background-light
-				hover:text-highlight-foreground-light
-				dark:hover:bg-highlight-background-dark
-				dark:hover:text-highlight-foreground-dark"
+				cursor-pointer"
 		>
-			<div className="mt-px mr-3">
-				<CommandItemIcon type={type}/>
+			{selected &&
+				<motion.div
+					layoutId="selection"
+					transition={{
+						type: 'spring',
+						damping: 65,
+						stiffness: 1800
+					}}
+					className="
+						absolute
+						right-0
+						z-0
+						w-full
+						h-full
+						rounded-md
+						bg-highlight-background-light
+						dark:bg-highlight-background-dark"
+				/>}
+			<div className="flex z-10 items-center">
+				<div className="mt-px mr-3">
+					<CommandItemIcon type={item.type}/>
+				</div>
+				<span>{item.name}</span>
+				{item.shortcut ? <div>{item.shortcut}</div> : ''}
 			</div>
-			<span>{name}</span>
-			{shortcut ? <div>{shortcut}</div> : ''}
 		</div>
 	);
 };

@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
 import {CommandItem, CommandItemView} from './commandItem';
+import {AnimateSharedLayout} from 'framer-motion';
 
 export const Pallette = ({items}: {items: CommandItem[]}) => {
 	const [open, setOpen] = useState(false);
@@ -49,6 +50,7 @@ export const Pallette = ({items}: {items: CommandItem[]}) => {
 
 const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
 	const [predicate, setPredicate] = useState('');
+	const [selected, setSelected] = useState(0);
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -59,6 +61,23 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	useEffect(() => {
 		inputRef.current?.focus();
 	}, []);
+
+	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		switch (e.key) {
+			case 'ArrowDown':
+				setSelected((selected + 1) % items.length);
+				break;
+			case 'ArrowUp':
+				if (selected <= 0) {
+					setSelected(items.length - 1);
+				}	else {
+					setSelected(selected - 1);
+				}
+
+				break;
+			default:
+		}
+	};
 
 	return (
 		<Transition.Child
@@ -104,10 +123,12 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					onInput={e => {
 						setPredicate((e.target as HTMLInputElement).value);
 					}}
+					onKeyDown={moveFocus}
 				/>
 				<div className="mx-3 mb-1 h-px bg-separator-light dark:bg-separator-dark" />
-				{/* Use framer-motion here to move the highlight seamlessly */}
-				{items.map(item => <CommandItemView key={item.name} {...item}/>)}
+				<AnimateSharedLayout>
+					{items.map(item => <CommandItemView key={item.name} item={item} selected={items[selected] === item} />)}
+				</AnimateSharedLayout>
 			</div>
 		</Transition.Child>
 	);
