@@ -29,9 +29,9 @@ export const CommandItemView = ({item, selected}: {item: CommandItem; selected: 
 		<motion.div
 			key={item.name}
 			layout
-			initial={{opacity: 0}}
-			animate={{opacity: 1}}
-			exit={{opacity: 0, maxHeight: 0}}
+			initial={{opacity: 0, maxHeight: 'auto'}}
+			animate={{opacity: 1, maxHeight: 'auto'}}
+			exit={{opacity: 0, maxHeight: '0%'}}
 			transition={{
 				type: 'spring',
 				damping: 80,

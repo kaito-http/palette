@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
 import {CommandItem, CommandItemView} from './commandItem';
@@ -52,16 +52,12 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	const [predicate, setPredicate] = useState('');
 	const [selected, setSelected] = useState(0);
 
-	const mappedItems = items.filter(
-		item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase())
-	);
+	const mappedItems = useMemo(() => {
+		return items.filter(item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase()));
+	}, [items, predicate]);
 
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
-
-	useEffect(() => {
-		setSelected(0);
-	}, [mappedItems.length]);
 
 	useHotkeys('esc', close, {
 		enableOnTags: ['INPUT'],
@@ -70,6 +66,10 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	useEffect(() => {
 		inputRef.current?.focus();
 	}, []);
+
+	useEffect(() => {
+		setSelected(0);
+	}, [mappedItems.length]);
 
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
@@ -142,8 +142,8 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 						/>
 					</motion.div>
 					<motion.div layout className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
-					<div className="py-2">
-						<AnimatePresence presenceAffectsLayout>
+					<div className="overflow-hidden py-2">
+						<AnimatePresence>
 							{mappedItems.map((item, index) => {
 								return <CommandItemView key={item.name} item={item} selected={selected === index} />;
 							})}
