@@ -70,8 +70,8 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	}, []);
 
 	useEffect(() => {
-		setSelected(0);
-	}, [mappedItems.length]);
+		setSelected(items.indexOf(mappedItems[0]));
+	}, [mappedItems]);
 
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
@@ -158,7 +158,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 										index={index}
 										setIndex={setSelected}
 										item={item}
-										selected={selected === index}
+										selected={items[selected] === item}
 									/>
 								);
 							})}
