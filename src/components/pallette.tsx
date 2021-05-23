@@ -103,6 +103,11 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 				<motion.div
 					ref={ref}
 					layout
+					transition={{
+						type: 'spring',
+						damping: 80,
+						stiffness: 2000,
+					}}
 					className="
 						flex
 						overflow-y-hidden
