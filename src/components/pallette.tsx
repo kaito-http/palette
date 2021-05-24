@@ -129,65 +129,87 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 			leaveFrom="scale-100 opacity-100"
 			leaveTo="scale-75 opacity-0"
 		>
-			<AnimateSharedLayout>
-				<motion.div
-					ref={ref}
-					layout
-					transition={{
-						type: 'spring',
-						damping: 80,
-						stiffness: 2000,
-					}}
+			<div
+				ref={ref}
+				className="
+					flex
+					absolute
+					top-1/3
+					flex-col
+					w-3/4
+					max-w-screen-sm
+					max-h-96
+					border
+					border-separator-light
+					dark:border-separator-dark
+					text-pallette-foreground-light
+					dark:text-pallette-foreground-dark
+						"
+			>
+				<input
+					ref={inputRef}
+					type="text"
+					placeholder="Search"
 					className="
-						flex
-						overflow-hidden
-						flex-col
-						w-3/4
-						max-w-screen-sm
-						max-h-96
-						rounded-xl
-						border
+						flex-1
+						px-5
+						pt-4
+						pb-5
+						text-lg
+						rounded-t-xl
+						border-t
+						border-r
+						border-l
 						border-separator-light
 						dark:border-separator-dark
-						text-pallette-foreground-light
-						dark:text-pallette-foreground-dark
+						appearance-none
+						focus:outline-none
+						text-highlight-foreground-light
+						dark:text-highlight-foreground-dark
 						bg-pallette-background-light
 						dark:bg-pallette-background-dark
-					"
-				>
-					<motion.div layout className="flex">
-						<input
-							ref={inputRef}
-							type="text"
-							placeholder="Search"
-							className="
-								flex-1
-								py-4
-								px-5
-								text-lg
-								appearance-none
-								focus:outline-none
-								text-highlight-foreground-light
-								dark:text-highlight-foreground-dark
-								bg-pallette-background-light
-								dark:bg-pallette-background-dark"
-							value={predicate}
-							onInput={e => {
-								setPredicate((e.target as HTMLInputElement).value);
-							}}
-							onKeyDown={moveFocus}
-						/>
-					</motion.div>
-
-					<div className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
-					{filteredItems.length === 0 && (
-						<div className="mx-3 text-center">
-							<div className="flex justify-center items-center pt-4 h-16">
-								<h2 className="inline">No Items</h2>
-							</div>
-						</div>
-					)}
-					<div className="overflow-x-hidden py-2">
+							"
+					value={predicate}
+					onInput={e => {
+						setPredicate((e.target as HTMLInputElement).value);
+					}}
+					onKeyDown={moveFocus}
+				/>
+				<div
+					style={{width: 'calc(100% - 1.5rem)'}}
+					className="
+						absolute
+						top-14
+						mx-3
+						mt-1
+						h-px
+						bg-separator-light
+						dark:bg-separator-dark
+						"
+				/>
+				<AnimateSharedLayout>
+					<motion.div
+						layout
+						layoutId="container"
+						transition={{
+							type: 'spring',
+							damping: 80,
+							stiffness: 2000,
+						}}
+						className="
+							overflow-x-hidden
+							overflow-y-scroll
+							py-2
+							rounded-b-xl
+							border-r
+							border-b
+							border-l
+							border-separator-light
+							dark:border-separator-dark
+							bg-pallette-background-light
+							dark:bg-pallette-background-dark
+										"
+					>
 						<AnimatePresence>
 							{filteredItems.map(item => {
 								return (
@@ -201,9 +223,9 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 								);
 							})}
 						</AnimatePresence>
-					</div>
-				</motion.div>
-			</AnimateSharedLayout>
+					</motion.div>
+				</AnimateSharedLayout>
+			</div>
 		</Transition.Child>
 	);
 };

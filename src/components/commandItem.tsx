@@ -46,17 +46,10 @@ export const CommandItemView = ({
 		<motion.div
 			key={item.key}
 			layout
+			layoutId={item.key}
 			initial={{opacity: 0, maxHeight: 'auto'}}
 			animate={{opacity: 1, maxHeight: 'auto'}}
-			exit={{
-				opacity: 0,
-				maxHeight: '0%',
-				transition: {
-					type: 'spring',
-					damping: 10000,
-					stiffness: 1,
-				},
-			}}
+			exit={{opacity: 0, maxHeight: '0px', transition: {duration: 0}}}
 			transition={{
 				type: 'spring',
 				damping: 80,
