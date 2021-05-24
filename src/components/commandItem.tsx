@@ -7,10 +7,18 @@ export enum CommandItemType {
 	Action,
 }
 
-export interface CommandItem {
+export class CommandItem {
 	type: CommandItemType;
 	name: string;
 	shortcut?: string;
+	key: string;
+	constructor(type: CommandItemType, name: string, shortcut?: string) {
+		this.type = type;
+		this.name = name;
+		this.shortcut = shortcut;
+		// Cheap random key
+		this.key = Math.random().toString(36).slice(2);
+	}
 }
 
 const CommandItemIcon = ({type}: {type: CommandItemType}) => {
@@ -31,25 +39,17 @@ export const CommandItemView = ({
 }: {
 	item: CommandItem;
 	selected: boolean;
-	index: number;
-	setIndex: Dispatch<SetStateAction<number>>;
+	setSelected: Dispatch<SetStateAction<string|undefined>>;
 	click: () => void;
 }) => {
 	return (
 		<motion.div
-			key={item.name}
+			key={item.key}
 			layout
+			layoutId={item.key}
 			initial={{opacity: 0, maxHeight: 'auto'}}
 			animate={{opacity: 1, maxHeight: 'auto'}}
-			exit={{
-				opacity: 0,
-				maxHeight: '0%',
-				transition: {
-					type: 'spring',
-					damping: 10000,
-					stiffness: 1,
-				},
-			}}
+			exit={{opacity: 0, maxHeight: '0px', transition: {duration: 0}}}
 			transition={{
 				type: 'spring',
 				damping: 80,
@@ -60,10 +60,9 @@ export const CommandItemView = ({
 				relative
 				items-center
 				my-1
-				mx-3
-			"
+				mx-3"
 			onMouseOver={() => {
-				props.setIndex(props.index);
+				props.setSelected(item.key);
 			}}
 		>
 			{selected && (
@@ -77,7 +76,6 @@ export const CommandItemView = ({
 					className="
 						absolute
 						right-0
-						z-0
 						w-full
 						h-full
 						rounded-md
@@ -85,7 +83,7 @@ export const CommandItemView = ({
 						dark:bg-highlight-background-dark"
 				/>
 			)}
-			<div className="z-10 w-full">
+			<div className="relative z-10 w-full">
 				<button
 					type="button"
 					className="
@@ -93,13 +91,14 @@ export const CommandItemView = ({
 						py-3
 						px-5
 						w-full
+						bg-transparent
 						rounded-md
 						transition-all
 						outline-none
 						focus:outline-none
 						"
 					onFocus={() => {
-						props.setIndex(props.index);
+						props.setSelected(item.key);
 					}}
 					onClick={props.click}
 				>
