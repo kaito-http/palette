@@ -1,6 +1,6 @@
 import React from 'react';
-import {Pallette} from '../components/pallette';
-import {CommandItemType} from '../components/commandItem';
+import {Palette} from '../components/pallette';
+import {CommandItem, CommandItemType} from '../components/commandItem';
 
 const Home = () => {
 	return (
@@ -17,18 +17,18 @@ const Home = () => {
 			"
 		>
 			<h1 className="flex-grow-0 text-2xl opacity-30">Press ⌘K</h1>
-			<Pallette
+			<Palette
 				items={[
-					{type: CommandItemType.Action, name: 'View help'},
-					{type: CommandItemType.Action, name: 'Download Ram'},
-					{type: CommandItemType.Action, name: 'Enable Teddies'},
-					{type: CommandItemType.Action, name: 'Test'},
-					{type: CommandItemType.Action, name: 'more'},
-					{type: CommandItemType.Action, name: 'Look mom, commands!'},
-					{type: CommandItemType.Action, name: 'This is so cool.'},
-					{type: CommandItemType.Navigation, name: 'Home Page'},
-					{type: CommandItemType.Navigation, name: 'About Page'},
-					{type: CommandItemType.Navigation, name: 'Pricing page'},
+					new CommandItem(CommandItemType.Action, 'View help'),
+					new CommandItem(CommandItemType.Action, 'Download Ram'),
+					new CommandItem(CommandItemType.Action, 'Enable Teddies'),
+					new CommandItem(CommandItemType.Action, 'Test'),
+					new CommandItem(CommandItemType.Action, 'more'),
+					new CommandItem(CommandItemType.Action, 'Look mom, commands!'),
+					new CommandItem(CommandItemType.Action, 'This is so cool.'),
+					new CommandItem(CommandItemType.Navigation, 'Home Page'),
+					new CommandItem(CommandItemType.Navigation, 'About Page'),
+					new CommandItem(CommandItemType.Navigation, 'Pricing page'),
 				]}
 			/>
 		</div>

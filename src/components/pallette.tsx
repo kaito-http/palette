@@ -4,7 +4,7 @@ import {useHotkeys} from 'react-hotkeys-hook';
 import {CommandItem, CommandItemView} from './commandItem';
 import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 
-export const Pallette = ({items}: {items: CommandItem[]}) => {
+export const Palette = ({items}: {items: CommandItem[]}) => {
 	const [open, setOpen] = useState(false);
 
 	useHotkeys(
@@ -52,19 +52,32 @@ export const Pallette = ({items}: {items: CommandItem[]}) => {
 
 const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
 	const [predicate, setPredicate] = useState('');
-	const [selected, setSelected] = useState(0);
+	const [selected, setSelected] = useState<string|undefined>(items[0]?.key);
 
-	const mappedItems = useMemo(() => {
-		return items.filter(item => predicate.length === 0 || item.name.toLowerCase().includes(predicate.toLowerCase()));
+	const itemMap = useMemo(() => {
+		return items.reduce<Record<string, CommandItem>>((map, item) => {
+			map[item.key] = item;
+			return map;
+		}, {});
+	}, [items]);
+
+	const filteredItems = useMemo(() => {
+		if (predicate.length <= 0) {
+			return items;
+		}
+
+		return items.filter(item => item.name.toLowerCase().includes(predicate.toLowerCase()));
 	}, [items, predicate]);
 
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const acceptCommand = () => {
-		const command = mappedItems[selected];
-		// eslint-disable-next-line no-alert
-		alert(command.name);
+		if (selected !== undefined) {
+			const command = itemMap[selected];
+			// eslint-disable-next-line no-alert
+			alert(command.name);
+		}
 	};
 
 	useHotkeys('esc', close, {
@@ -80,23 +93,25 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	}, []);
 
 	useEffect(() => {
-		setSelected(items.indexOf(mappedItems[0]));
-	}, [mappedItems, items]);
+		setSelected(filteredItems[0]?.key);
+	}, [filteredItems, items]);
 
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (filteredItems.length <= 0) {
+			return;
+		}
+
+		// eslint-disable-next-line no-negated-condition
+		const selectedIndex = selected !== undefined ? filteredItems.indexOf(itemMap[selected]) : 0;
+
 		switch (e.key) {
 			case 'ArrowDown': {
-				setSelected(s => (s + 1) % mappedItems.length);
+				setSelected(filteredItems[(selectedIndex + 1) % filteredItems.length].key);
 				break;
 			}
 
 			case 'ArrowUp': {
-				if (selected > 0) {
-					setSelected(s => s - 1);
-				} else {
-					setSelected(mappedItems.length - 1);
-				}
-
+				setSelected(filteredItems[selectedIndex - 1]?.key ?? filteredItems[filteredItems.length - 1]?.key);
 				break;
 			}
 
@@ -165,7 +180,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					</motion.div>
 
 					<div className="mx-3 h-px bg-separator-light dark:bg-separator-dark" />
-					{mappedItems.length === 0 && (
+					{filteredItems.length === 0 && (
 						<div className="mx-3 text-center">
 							<div className="flex justify-center items-center pt-4 h-16">
 								<h2 className="inline">No Items</h2>
@@ -174,14 +189,13 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					)}
 					<div className="overflow-x-hidden py-2">
 						<AnimatePresence>
-							{mappedItems.map((item, index) => {
+							{filteredItems.map(item => {
 								return (
 									<CommandItemView
-										key={item.name}
-										index={index}
-										setIndex={setSelected}
+										key={item.key}
 										item={item}
-										selected={mappedItems[selected] === item}
+										selected={item.key === selected}
+										setSelected={setSelected}
 										click={acceptCommand}
 									/>
 								);
