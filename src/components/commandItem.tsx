@@ -94,10 +94,13 @@ export const CommandItemView = ({
 						px-5
 						w-full
 						rounded-md
-						focus:ring
+						transition-all
 						outline-none
 						focus:outline-none
 						"
+					onFocus={() => {
+						props.setIndex(props.index);
+					}}
 					onClick={props.click}
 				>
 					<div className="mt-px mr-3">
