@@ -22,8 +22,13 @@ const Home = () => {
 					{type: CommandItemType.Action, name: 'View help'},
 					{type: CommandItemType.Action, name: 'Download Ram'},
 					{type: CommandItemType.Action, name: 'Enable Teddies'},
+					{type: CommandItemType.Action, name: 'Test'},
+					{type: CommandItemType.Action, name: 'more'},
+					{type: CommandItemType.Action, name: 'Look mom, commands!'},
+					{type: CommandItemType.Action, name: 'This is so cool.'},
 					{type: CommandItemType.Navigation, name: 'Home Page'},
 					{type: CommandItemType.Navigation, name: 'About Page'},
+					{type: CommandItemType.Navigation, name: 'Pricing page'},
 				]}
 			/>
 		</div>

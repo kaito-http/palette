@@ -76,14 +76,14 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
 			case 'ArrowDown':
-				setSelected((selected + 1) % items.length);
+				setSelected(s => (s + 1) % mappedItems.length);
 				break;
 
 			case 'ArrowUp':
-				if (selected <= 0) {
-					setSelected(items.length - 1);
+				if (selected > 0) {
+					setSelected(s => s - 1);
 				} else {
-					setSelected(selected - 1);
+					setSelected(mappedItems.length - 1);
 				}
 
 				break;
@@ -112,10 +112,11 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					}}
 					className="
 						flex
-						overflow-y-hidden
+						overflow-hidden
 						flex-col
 						w-3/4
 						max-w-screen-sm
+						max-h-96
 						rounded-xl
 						border
 						border-separator-light
@@ -123,7 +124,8 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 						text-pallette-foreground-light
 						dark:text-pallette-foreground-dark
 						bg-pallette-background-light
-						dark:bg-pallette-background-dark"
+						dark:bg-pallette-background-dark
+					"
 				>
 					<motion.div layout className="flex">
 						<input
@@ -157,7 +159,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 							</div>
 						</div>
 					)}
-					<div className="overflow-hidden py-2">
+					<div className="overflow-x-hidden py-2">
 						<AnimatePresence>
 							{mappedItems.map((item, index) => {
 								return (
@@ -166,7 +168,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 										index={index}
 										setIndex={setSelected}
 										item={item}
-										selected={items[selected] === item}
+										selected={mappedItems[selected] === item}
 									/>
 								);
 							})}
