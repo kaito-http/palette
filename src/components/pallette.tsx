@@ -61,7 +61,17 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
+	const acceptCommand = () => {
+		const command = mappedItems[selected];
+		// eslint-disable-next-line no-alert
+		alert(command.name);
+	};
+
 	useHotkeys('esc', close, {
+		enableOnTags: ['INPUT'],
+	});
+
+	useHotkeys('enter', acceptCommand, {
 		enableOnTags: ['INPUT'],
 	});
 
@@ -75,11 +85,12 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		switch (e.key) {
-			case 'ArrowDown':
+			case 'ArrowDown': {
 				setSelected(s => (s + 1) % mappedItems.length);
 				break;
+			}
 
-			case 'ArrowUp':
+			case 'ArrowUp': {
 				if (selected > 0) {
 					setSelected(s => s - 1);
 				} else {
@@ -87,9 +98,11 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 				}
 
 				break;
+			}
 
-			default:
+			default: {
 				break;
+			}
 		}
 	};
 
@@ -169,6 +182,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 										setIndex={setSelected}
 										item={item}
 										selected={mappedItems[selected] === item}
+										click={acceptCommand}
 									/>
 								);
 							})}

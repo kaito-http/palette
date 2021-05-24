@@ -33,6 +33,7 @@ export const CommandItemView = ({
 	selected: boolean;
 	index: number;
 	setIndex: Dispatch<SetStateAction<number>>;
+	click: () => void;
 }) => {
 	return (
 		<motion.div
@@ -58,11 +59,8 @@ export const CommandItemView = ({
 				flex
 				relative
 				items-center
-				py-3
-				px-5
 				my-1
 				mx-3
-				cursor-pointer
 			"
 			onMouseOver={() => {
 				props.setIndex(props.index);
@@ -87,12 +85,27 @@ export const CommandItemView = ({
 						dark:bg-highlight-background-dark"
 				/>
 			)}
-			<div className="flex z-10 items-center">
-				<div className="mt-px mr-3">
-					<CommandItemIcon type={item.type} />
-				</div>
-				<span>{item.name}</span>
-				{item.shortcut ? <div>{item.shortcut}</div> : ''}
+			<div className="z-10 w-full">
+				<button
+					type="button"
+					className="
+						flex
+						py-3
+						px-5
+						w-full
+						rounded-md
+						focus:ring
+						outline-none
+						focus:outline-none
+						"
+					onClick={props.click}
+				>
+					<div className="mt-px mr-3">
+						<CommandItemIcon type={item.type} />
+					</div>
+					<span>{item.name}</span>
+					{item.shortcut ? <div>{item.shortcut}</div> : ''}
+				</button>
 			</div>
 		</motion.div>
 	);
