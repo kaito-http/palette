@@ -139,9 +139,6 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					w-3/4
 					max-w-screen-sm
 					max-h-96
-					border
-					border-separator-light
-					dark:border-separator-dark
 					text-pallette-foreground-light
 					dark:text-pallette-foreground-dark
 						"
