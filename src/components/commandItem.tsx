@@ -40,12 +40,15 @@ export const CommandItemView = ({
 	item: CommandItem;
 	selected: boolean;
 	setSelected: Dispatch<SetStateAction<string|undefined>>;
+	setEventType: Dispatch<SetStateAction<'mouse'|'arrow'|'search'|undefined>>;
+	lastMouseMove: number;
 	click: () => void;
 }) => {
 	return (
 		<motion.div
 			key={item.key}
 			layout
+			id={item.key}
 			layoutId={item.key}
 			initial={{opacity: 0, maxHeight: 'auto'}}
 			animate={{opacity: 1, maxHeight: 'auto'}}
@@ -62,7 +65,10 @@ export const CommandItemView = ({
 				my-1
 				mx-3"
 			onMouseOver={() => {
-				props.setSelected(item.key);
+				if (Date.now() - props.lastMouseMove < 50) {
+					props.setEventType('mouse');
+					props.setSelected(item.key);
+				}
 			}}
 		>
 			{selected && (

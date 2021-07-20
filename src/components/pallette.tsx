@@ -52,6 +52,8 @@ export const Palette = ({items}: {items: CommandItem[]}) => {
 
 const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
 	const [predicate, setPredicate] = useState('');
+	const [lastMouseMove, setLastMouseMove] = useState(Date.now());
+	const [eventType, setEventType] = useState<'mouse'|'arrow'|'search'|undefined>();
 	const [selected, setSelected] = useState<string|undefined>(items[0]?.key);
 
 	const itemMap = useMemo(() => {
@@ -71,6 +73,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 
 	const ref = useOutsideClick<HTMLDivElement>(close);
 	const inputRef = useRef<HTMLInputElement | null>(null);
+	const suggestionRef = useRef<HTMLDivElement | null>(null);
 
 	const acceptCommand = () => {
 		if (selected !== undefined) {
@@ -96,6 +99,17 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 		setSelected(filteredItems[0]?.key);
 	}, [filteredItems, items]);
 
+	useEffect(() => {
+		if (!selected || eventType !== 'arrow') {
+			return;
+		}
+
+		const element = document.getElementById(selected);
+		if (element) {
+			element.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+		}
+	}, [selected, eventType]);
+
 	const moveFocus = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (filteredItems.length <= 0) {
 			return;
@@ -119,6 +133,8 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 				break;
 			}
 		}
+
+		setEventType('arrow');
 	};
 
 	return (
@@ -169,6 +185,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 					value={predicate}
 					onInput={e => {
 						setPredicate((e.target as HTMLInputElement).value);
+						setEventType('search');
 					}}
 					onKeyDown={moveFocus}
 				/>
@@ -186,6 +203,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 				/>
 				<AnimateSharedLayout>
 					<motion.div
+						ref={suggestionRef}
 						layout
 						layoutId="container"
 						transition={{
@@ -206,6 +224,9 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 							bg-pallette-background-light
 							dark:bg-pallette-background-dark
 										"
+						onMouseMove={() => {
+							setLastMouseMove(Date.now());
+						}}
 					>
 						<AnimatePresence>
 							{filteredItems.map(item => {
@@ -214,7 +235,9 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 										key={item.key}
 										item={item}
 										selected={item.key === selected}
+										setEventType={setEventType}
 										setSelected={setSelected}
+										lastMouseMove={lastMouseMove}
 										click={acceptCommand}
 									/>
 								);
