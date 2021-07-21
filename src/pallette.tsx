@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
-import {CommandItem, CommandItemView} from './commandItem';
+import {CommandItem, CommandItemView} from './command-item';
 import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 
 export const Palette = ({items}: {items: CommandItem[]}) => {
@@ -53,15 +53,17 @@ export const Palette = ({items}: {items: CommandItem[]}) => {
 const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
 	const [predicate, setPredicate] = useState('');
 	const [lastMouseMove, setLastMouseMove] = useState(Date.now());
-	const [eventType, setEventType] = useState<'mouse'|'arrow'|'search'|undefined>();
-	const [selected, setSelected] = useState<string|undefined>(items[0]?.key);
+	const [eventType, setEventType] = useState<'mouse' | 'arrow' | 'search' | undefined>();
+	const [selected, setSelected] = useState<string | undefined>(items[0]?.key);
 
-	const itemMap = useMemo(() => {
-		return items.reduce<Record<string, CommandItem>>((map, item) => {
-			map[item.key] = item;
-			return map;
-		}, {});
-	}, [items]);
+	const itemMap = useMemo(
+		() =>
+			items.reduce<Record<string, CommandItem>>((map, item) => {
+				map[item.key] = item;
+				return map;
+			}, {}),
+		[items]
+	);
 
 	const filteredItems = useMemo(() => {
 		if (predicate.length <= 0) {
@@ -229,19 +231,17 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 						}}
 					>
 						<AnimatePresence>
-							{filteredItems.map(item => {
-								return (
-									<CommandItemView
-										key={item.key}
-										item={item}
-										selected={item.key === selected}
-										setEventType={setEventType}
-										setSelected={setSelected}
-										lastMouseMove={lastMouseMove}
-										click={acceptCommand}
-									/>
-								);
-							})}
+							{filteredItems.map(item => (
+								<CommandItemView
+									key={item.key}
+									item={item}
+									selected={item.key === selected}
+									setEventType={setEventType}
+									setSelected={setSelected}
+									lastMouseMove={lastMouseMove}
+									click={acceptCommand}
+								/>
+							))}
 						</AnimatePresence>
 					</motion.div>
 				</AnimateSharedLayout>
