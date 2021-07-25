@@ -24,10 +24,10 @@ export const CommandItemView = ({
 }: {
 	item: CommandItem;
 	selected: boolean;
-	setSelected: Dispatch<SetStateAction<string | undefined>>;
-	setEventType: Dispatch<SetStateAction<'mouse' | 'arrow' | 'search' | undefined>>;
+	setSelected: Dispatch<SetStateAction<string | null>>;
+	setEventType: Dispatch<SetStateAction<'mouse' | 'arrow' | 'search' | null>>;
 	lastMouseMove: number;
-	click: () => void;
+	click: () => unknown;
 }) => (
 	<motion.div
 		key={item.key}
