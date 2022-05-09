@@ -1,42 +1,43 @@
 {
-  "name": "spring-pallette",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/alii/spring-pallette",
-  "author": "Alistair Smith <alistairsmith01@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "@headlessui/react": "^1.2.0",
-    "@reach/dialog": "^0.15.0",
-    "autoprefixer": "^10.2.5",
-    "clsx": "^1.1.1",
-    "framer-motion": "^4.1.17",
-    "jotai": "^0.16.5",
-    "next": "^10.2.2",
-    "postcss": "^8.3.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hotkeys-hook": "^3.3.1",
-    "react-icons": "^4.2.0",
-    "tailwindcss": "^2.1.2",
-    "use-hotkeys": "^1.1.0"
-  },
-  "devDependencies": {
-    "@types/node": "^15.6.0",
-    "@types/react": "^17.0.6",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
-    "@typescript-eslint/parser": "^4.24.0",
-    "eslint": "^7.27.0",
-    "eslint-config-xo": "^0.36.0",
-    "eslint-config-xo-react": "^0.25.0",
-    "eslint-config-xo-typescript": "^0.41.1",
-    "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-tailwindcss": "^1.8.0",
-    "prettier": "^2.3.0",
-    "typescript": "^4.2.4"
-  },
-  "scripts": {
-    "dev": "next dev"
-  }
+	"name": "spring-palette",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"repository": "https://github.com/kaito-http/palette",
+	"author": "Alistair Smith <alistairsmith01@gmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"@headlessui/react": "^1.3.0",
+		"autoprefixer": "^10.3.1",
+		"clsx": "^1.1.1",
+		"framer-motion": "^4.1.17",
+		"postcss": "^8.3.6",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-hotkeys-hook": "^3.4.0",
+		"tailwindcss": "^2.2.7",
+		"use-hotkeys": "^1.1.0"
+	},
+	"devDependencies": {
+		"@types/node": "^16.4.2",
+		"@types/react": "^17.0.15",
+		"@typescript-eslint/eslint-plugin": "^4.28.4",
+		"@typescript-eslint/parser": "^4.28.4",
+		"clean-css-cli": "^5.3.0",
+		"eslint": "^7.31.0",
+		"eslint-config-xo": "^0.37.0",
+		"eslint-config-xo-react": "^0.25.0",
+		"eslint-config-xo-typescript": "^0.43.0",
+		"eslint-plugin-react": "^7.24.0",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"eslint-plugin-tailwindcss": "^1.14.1",
+		"prettier": "^2.3.2",
+		"tsup": "^4.12.5",
+		"typescript": "^4.3.5"
+	},
+	"scripts": {
+		"build": "yarn build:ts && yarn build:css && yarn minify:css",
+		"build:css": "tailwind --jit > ./dist/style.css",
+		"build:ts": "tsup src/index.ts --minify --format esm,cjs --dts",
+		"minify:css": "cleancss -o ./dist/style.css ./dist/style.css"
+	}
 }

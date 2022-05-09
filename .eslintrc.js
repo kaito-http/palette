@@ -17,8 +17,8 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/comma-dangle': 'off',
 		'react/jsx-tag-spacing': 'off',
-		"tailwindcss/classnames-order": 'error',
-    "tailwindcss/no-contradicting-classname": 'error'
+		'tailwindcss/classnames-order': 'error',
+		'tailwindcss/no-contradicting-classname': 'error',
 	},
 	ignorePatterns: ['**/*.js'],
 };

@@ -1,30 +1,26 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Transition} from '@headlessui/react';
 import {useHotkeys} from 'react-hotkeys-hook';
-import {CommandItem, CommandItemView} from './commandItem';
+import {CommandItem, CommandItemView} from './command-item';
 import {AnimatePresence, AnimateSharedLayout, motion} from 'framer-motion';
 
-export const Palette = ({items}: {items: CommandItem[]}) => {
-	const [open, setOpen] = useState(false);
+export type SelectHandler = (item: CommandItem) => unknown;
 
-	useHotkeys(
-		'cmd+k,ctrl+k',
-		e => {
-			e.preventDefault();
-			setOpen(v => !v);
-		},
-		{
-			enableOnTags: ['INPUT'],
-		}
-	);
+export interface PalletProps {
+	items: CommandItem[];
+	onSelect: SelectHandler;
+	isOpen: boolean;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
+export const Palette = ({items, onSelect, isOpen, setOpen}: PalletProps) => {
 	useEffect(() => {
-		document.body.style.overflowY = open ? 'hidden' : 'auto';
-	}, [open]);
+		document.body.style.overflowY = isOpen ? 'hidden' : 'auto';
+	}, [isOpen]);
 
 	return (
 		<Transition
-			show={open}
+			show={isOpen}
 			className="
 				fixed
 				top-0
@@ -45,23 +41,34 @@ export const Palette = ({items}: {items: CommandItem[]}) => {
 				close={() => {
 					setOpen(false);
 				}}
+				onSelect={onSelect}
 			/>
 		</Transition>
 	);
 };
 
-const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => void}) => {
+const CommandContainer = ({
+	items,
+	close,
+	onSelect,
+}: {
+	onSelect: SelectHandler;
+	items: CommandItem[];
+	close: () => void;
+}) => {
 	const [predicate, setPredicate] = useState('');
 	const [lastMouseMove, setLastMouseMove] = useState(Date.now());
-	const [eventType, setEventType] = useState<'mouse'|'arrow'|'search'|undefined>();
-	const [selected, setSelected] = useState<string|undefined>(items[0]?.key);
+	const [eventType, setEventType] = useState<'mouse' | 'arrow' | 'search' | null>(null);
+	const [selected, setSelected] = useState<string | null>(items[0]?.key);
 
-	const itemMap = useMemo(() => {
-		return items.reduce<Record<string, CommandItem>>((map, item) => {
-			map[item.key] = item;
-			return map;
-		}, {});
-	}, [items]);
+	const itemMap = useMemo(
+		() =>
+			items.reduce<Record<string, CommandItem>>((map, item) => {
+				map[item.key] = item;
+				return map;
+			}, {}),
+		[items]
+	);
 
 	const filteredItems = useMemo(() => {
 		if (predicate.length <= 0) {
@@ -76,10 +83,9 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 	const suggestionRef = useRef<HTMLDivElement | null>(null);
 
 	const acceptCommand = () => {
-		if (selected !== undefined) {
+		if (selected !== null) {
 			const command = itemMap[selected];
-			// eslint-disable-next-line no-alert
-			alert(command.name);
+			onSelect(command);
 		}
 	};
 
@@ -116,7 +122,7 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 		}
 
 		// eslint-disable-next-line no-negated-condition
-		const selectedIndex = selected !== undefined ? filteredItems.indexOf(itemMap[selected]) : 0;
+		const selectedIndex = selected !== null ? filteredItems.indexOf(itemMap[selected]) : 0;
 
 		switch (e.key) {
 			case 'ArrowDown': {
@@ -229,19 +235,17 @@ const CommandContainer = ({items, close}: {items: CommandItem[]; close: () => vo
 						}}
 					>
 						<AnimatePresence>
-							{filteredItems.map(item => {
-								return (
-									<CommandItemView
-										key={item.key}
-										item={item}
-										selected={item.key === selected}
-										setEventType={setEventType}
-										setSelected={setSelected}
-										lastMouseMove={lastMouseMove}
-										click={acceptCommand}
-									/>
-								);
-							})}
+							{filteredItems.map(item => (
+								<CommandItemView
+									key={item.key}
+									item={item}
+									selected={item.key === selected}
+									setEventType={setEventType}
+									setSelected={setSelected}
+									lastMouseMove={lastMouseMove}
+									click={acceptCommand}
+								/>
+							))}
 						</AnimatePresence>
 					</motion.div>
 				</AnimateSharedLayout>
